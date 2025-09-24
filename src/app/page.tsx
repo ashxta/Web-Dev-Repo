@@ -230,198 +230,282 @@ export default function DashboardPage() {
 
       {/* Main */}
       <SidebarInset>
-        {/* Header */}
-        <header className="sticky top-0 z-10 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-          <div className={`max-w-7xl mx-auto px-4 py-3 flex items-center gap-2 ${notifOpen ? "pr-[360px] sm:pr-[420px]" : ""}`}>
-            <SidebarTrigger />
-            <div className="ml-1">
-              <div className="text-sm text-muted-foreground">Good Morning,</div>
-              <div className="text-lg font-semibold">Charlie</div>
-            </div>
-            <div className="ml-auto flex items-center gap-2">
-              <div className="relative">
-                <Search className="absolute left-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-                <Input placeholder="Search" className="h-9 w-64 pl-8" />
+        <div className={(notifOpen ? "mr-[360px] sm:mr-[420px]" : "") + " transition-[margin] duration-200"}>
+          {/* Header */}
+          <header className="sticky top-0 z-10 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+            <div className={`max-w-7xl mx-auto px-4 py-3 flex items-center gap-2`}>
+              <SidebarTrigger />
+              <div className="ml-1">
+                <div className="text-sm text-muted-foreground">Good Morning,</div>
+                <div className="text-lg font-semibold">Charlie</div>
               </div>
-              {/* Notifications Sheet */}
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-9 w-9"
-                onClick={() => setNotifOpen((v) => !v)}
-              >
-                <Bell className="size-4" />
-              </Button>
-              <Avatar className="h-9 w-9">
-                <AvatarImage src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?q=80&w=200&auto=format&fit=crop" />
-                <AvatarFallback>CH</AvatarFallback>
-              </Avatar>
-            </div>
-          </div>
-        </header>
-
-        {notifOpen && (
-          <aside
-            aria-label="Notifications panel"
-            className="fixed right-0 top-0 z-20 h-full w-[360px] sm:w-[420px] border-l bg-background"
-          >
-            <div className="flex items-start justify-between px-4 py-4 border-b">
-              <div>
-                <div className="text-sm font-semibold">Notifications</div>
-                <div className="text-xs text-muted-foreground">Recent updates and alerts</div>
+              <div className="ml-auto flex items-center gap-2">
+                <div className="relative">
+                  <Search className="absolute left-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                  <Input placeholder="Search" className="h-9 w-64 pl-8" />
+                </div>
+                {/* Notifications Sheet */}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-9 w-9"
+                  onClick={() => setNotifOpen((v) => !v)}
+                >
+                  <Bell className="size-4" />
+                </Button>
+                <Avatar className="h-9 w-9">
+                  <AvatarImage src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?q=80&w=200&auto=format&fit=crop" />
+                  <AvatarFallback>CH</AvatarFallback>
+                </Avatar>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => setNotifOpen(false)}>Close</Button>
             </div>
-            <div className="p-4 space-y-3 overflow-y-auto h-[calc(100%-64px)]">
-              {notifications.map((n, i) => (
-                <div key={i} className="flex items-start gap-3 rounded-md border bg-muted/50 p-3">
-                  <div className="size-8 shrink-0 grid place-items-center rounded-md bg-indigo-100 text-indigo-700">🔔</div>
-                  <div className="space-y-0.5">
-                    <div className="text-sm font-medium leading-none">{n.title}</div>
-                    <div className="text-xs text-muted-foreground">{n.time}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </aside>
-        )}
+          </header>
 
-        <main className={`max-w-7xl mx-auto p-4 md:p-6 space-y-4 ${notifOpen ? "pr-[360px] sm:pr-[420px]" : ""}`}>
-          {/* Top Row: Title + actions */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold">Dashboard Overview</h2>
-            <div className="flex items-center gap-2">
-              <Select defaultValue="this-month">
-                <SelectTrigger size="sm">
-                  <SelectValue placeholder="This Month" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Range</SelectLabel>
-                    <SelectItem value="this-week">This Week</SelectItem>
-                    <SelectItem value="this-month">This Month</SelectItem>
-                    <SelectItem value="last-month">Last Month</SelectItem>
-                    <SelectItem value="this-quarter">This Quarter</SelectItem>
-                    <SelectItem value="this-year">This Year</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <Button className="bg-indigo-600 hover:bg-indigo-600/90">Export Report</Button>
-            </div>
-          </div>
-
-          {/* KPI Cards */}
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
-            {/* Total Projects */}
-            <Card className="bg-violet-50 border-transparent">
-              <CardHeader className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="size-8 rounded-md bg-violet-500 text-white grid place-items-center">
-                    <LayoutDashboard className="size-4" />
-                  </div>
-                  <div>
-                    <CardDescription>Total Projects</CardDescription>
-                    <CardTitle className="text-2xl">7,265</CardTitle>
-                  </div>
-                </div>
-                <div className="flex flex-col items-end leading-none">
-                  <span className="text-xs text-green-600 font-medium">+11.01%</span>
-                  <span className="text-base">📈</span>
-                </div>
-              </CardHeader>
-            </Card>
-            {/* Active Projects */}
-            <Card className="bg-sky-50 border-transparent">
-              <CardHeader className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="size-8 rounded-md bg-sky-500 text-white grid place-items-center">
-                    <FolderKanban className="size-4" />
-                  </div>
-                  <div>
-                    <CardDescription>Active Projects</CardDescription>
-                    <CardTitle className="text-2xl">3,671</CardTitle>
-                  </div>
-                </div>
-                <div className="flex flex-col items-end leading-none">
-                  <span className="text-xs text-red-600 font-medium">-0.03%</span>
-                  <span className="text-base">📈</span>
-                </div>
-              </CardHeader>
-            </Card>
-            {/* Vulnerabilities */}
-            <Card className="bg-orange-50 border-transparent">
-              <CardHeader className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="size-8 rounded-md bg-orange-500 text-white grid place-items-center">
-                    <ShieldAlert className="size-4" />
-                  </div>
-                  <div>
-                    <CardDescription>Vulnerabilities</CardDescription>
-                    <CardTitle className="text-2xl">156</CardTitle>
-                  </div>
-                </div>
-                <div className="flex flex-col items-end leading-none">
-                  <span className="text-xs text-orange-600 font-medium">+15.03%</span>
-                  <span className="text-base">📈</span>
-                </div>
-              </CardHeader>
-            </Card>
-            {/* Clients */}
-            <Card className="bg-indigo-50 border-transparent">
-              <CardHeader className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="size-8 rounded-md bg-indigo-500 text-white grid place-items-center">
-                    <Users2 className="size-4" />
-                  </div>
-                  <div>
-                    <CardDescription>Clients</CardDescription>
-                    <CardTitle className="text-2xl">2,318</CardTitle>
-                  </div>
-                </div>
-                <div className="flex flex-col items-end leading-none">
-                  <span className="text-xs text-green-600 font-medium">+6.03%</span>
-                  <span className="text-base">📈</span>
-                </div>
-              </CardHeader>
-            </Card>
-          </div>
-
-          {/* Charts Row */}
-          <div className="grid gap-4 lg:grid-cols-3">
-            <Card className="lg:col-span-2 bg-gray-50 border-transparent">
-              <CardHeader className="flex items-center justify-between">
+          {notifOpen && (
+            <aside
+              aria-label="Notifications panel"
+              className="fixed right-0 top-0 z-20 h-full w-[360px] sm:w-[420px] border-l bg-background"
+            >
+              <div className="flex items-start justify-between px-4 py-4 border-b">
                 <div>
-                  <CardTitle className="text-base">Projects by Type</CardTitle>
-                  <CardDescription>Distribution by category</CardDescription>
+                  <div className="text-sm font-semibold">Notifications</div>
+                  <div className="text-xs text-muted-foreground">Recent updates and alerts</div>
                 </div>
-                <Select defaultValue="aug">
+                <Button variant="ghost" size="sm" onClick={() => setNotifOpen(false)}>Close</Button>
+              </div>
+              <div className="p-4 space-y-3 overflow-y-auto h-[calc(100%-64px)]">
+                {notifications.map((n, i) => (
+                  <div key={i} className="flex items-start gap-3 rounded-md border bg-muted/50 p-3">
+                    <div className="size-8 shrink-0 grid place-items-center rounded-md bg-indigo-100 text-indigo-700">🔔</div>
+                    <div className="space-y-0.5">
+                      <div className="text-sm font-medium leading-none">{n.title}</div>
+                      <div className="text-xs text-muted-foreground">{n.time}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </aside>
+          )}
+
+          <main className={`max-w-7xl mx-auto p-4 md:p-6 space-y-4`}>
+            {/* Top Row: Title + actions */}
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-semibold">Dashboard Overview</h2>
+              <div className="flex items-center gap-2">
+                <Select defaultValue="this-month">
                   <SelectTrigger size="sm">
-                    <SelectValue placeholder="Aug" />
+                    <SelectValue placeholder="This Month" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="jun">Jun</SelectItem>
-                      <SelectItem value="jul">Jul</SelectItem>
-                      <SelectItem value="aug">Aug</SelectItem>
-                      <SelectItem value="sep">Sep</SelectItem>
+                      <SelectLabel>Range</SelectLabel>
+                      <SelectItem value="this-week">This Week</SelectItem>
+                      <SelectItem value="this-month">This Month</SelectItem>
+                      <SelectItem value="last-month">Last Month</SelectItem>
+                      <SelectItem value="this-quarter">This Quarter</SelectItem>
+                      <SelectItem value="this-year">This Year</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <Button className="bg-indigo-600 hover:bg-indigo-600/90">Export Report</Button>
+              </div>
+            </div>
+
+            {/* KPI Cards */}
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
+              {/* Total Projects */}
+              <Card className="bg-violet-50 border-transparent">
+                <CardHeader className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="size-8 rounded-md bg-violet-500 text-white grid place-items-center">
+                      <LayoutDashboard className="size-4" />
+                    </div>
+                    <div>
+                      <CardDescription>Total Projects</CardDescription>
+                      <CardTitle className="text-2xl">7,265</CardTitle>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end leading-none">
+                    <span className="text-xs text-green-600 font-medium">+11.01%</span>
+                    <span className="text-base">📈</span>
+                  </div>
+                </CardHeader>
+              </Card>
+              {/* Active Projects */}
+              <Card className="bg-sky-50 border-transparent">
+                <CardHeader className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="size-8 rounded-md bg-sky-500 text-white grid place-items-center">
+                      <FolderKanban className="size-4" />
+                    </div>
+                    <div>
+                      <CardDescription>Active Projects</CardDescription>
+                      <CardTitle className="text-2xl">3,671</CardTitle>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end leading-none">
+                    <span className="text-xs text-red-600 font-medium">-0.03%</span>
+                    <span className="text-base">📈</span>
+                  </div>
+                </CardHeader>
+              </Card>
+              {/* Vulnerabilities */}
+              <Card className="bg-orange-50 border-transparent">
+                <CardHeader className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="size-8 rounded-md bg-orange-500 text-white grid place-items-center">
+                      <ShieldAlert className="size-4" />
+                    </div>
+                    <div>
+                      <CardDescription>Vulnerabilities</CardDescription>
+                      <CardTitle className="text-2xl">156</CardTitle>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end leading-none">
+                    <span className="text-xs text-orange-600 font-medium">+15.03%</span>
+                    <span className="text-base">📈</span>
+                  </div>
+                </CardHeader>
+              </Card>
+              {/* Clients */}
+              <Card className="bg-indigo-50 border-transparent">
+                <CardHeader className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="size-8 rounded-md bg-indigo-500 text-white grid place-items-center">
+                      <Users2 className="size-4" />
+                    </div>
+                    <div>
+                      <CardDescription>Clients</CardDescription>
+                      <CardTitle className="text-2xl">2,318</CardTitle>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end leading-none">
+                    <span className="text-xs text-green-600 font-medium">+6.03%</span>
+                    <span className="text-base">📈</span>
+                  </div>
+                </CardHeader>
+              </Card>
+            </div>
+
+            {/* Charts Row */}
+            <div className={`grid gap-4 ${notifOpen ? "lg:grid-cols-2" : "lg:grid-cols-3"}`}>
+              <Card className={`${notifOpen ? "lg:col-span-1" : "lg:col-span-2"} bg-gray-50 border-transparent`}>
+                <CardHeader className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-base">Projects by Type</CardTitle>
+                    <CardDescription>Distribution by category</CardDescription>
+                  </div>
+                  <Select defaultValue="aug">
+                    <SelectTrigger size="sm">
+                      <SelectValue placeholder="Aug" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="jun">Jun</SelectItem>
+                        <SelectItem value="jul">Jul</SelectItem>
+                        <SelectItem value="aug">Aug</SelectItem>
+                        <SelectItem value="sep">Sep</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </CardHeader>
+                <CardContent>
+                  <ChartContainer
+                    config={{ count: { label: "Projects", color: "hsl(var(--chart-3))" } }}
+                    className={`${notifOpen ? "h-[300px]" : "h-[360px]"}`}
+                  >
+                    <BarChart data={projectsByType} barSize={notifOpen ? 18 : 24}>
+                      <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                      <XAxis dataKey="type" axisLine={false} tickLine={false} />
+                      <YAxis axisLine={false} tickLine={false} />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Bar dataKey="count" radius={[6, 6, 0, 0]}>
+                        {projectsByType.map((_, i) => {
+                          const colors = ["#60a5fa", "#34d399", "#a78bfa", "#22d3ee", "#86efac", "#cbd5e1"]
+                          return <Cell key={i} fill={colors[i % colors.length]} />
+                        })}
+                      </Bar>
+                    </BarChart>
+                  </ChartContainer>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-orange-50/50 border-transparent">
+                <CardHeader>
+                  <CardTitle className="text-base">Vulnerabilities</CardTitle>
+                  <CardDescription>By severity</CardDescription>
+                </CardHeader>
+                <CardContent className={`grid grid-cols-2 items-center gap-4 ${notifOpen ? "h-[300px]" : "h-[360px]"} overflow-visible`}>
+                  <div className="w-full grid place-items-center">
+                    <div className={`${notifOpen ? "size-28" : "size-32"} aspect-square grid place-items-center`}>
+                      <PieChart width={notifOpen ? 112 : 128} height={notifOpen ? 112 : 128}>
+                        <Pie
+                          data={vulnerabilities}
+                          dataKey="value"
+                          nameKey="name"
+                          innerRadius={notifOpen ? 38 : 42}
+                          outerRadius={notifOpen ? 52 : 58}
+                          paddingAngle={6}
+                          cornerRadius={12}
+                          stroke="#ffffff"
+                          strokeWidth={6}
+                        >
+                          {vulnerabilities.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                      </PieChart>
+                    </div>
+                  </div>
+                  <div className="space-y-3 text-sm">
+                    {vulnerabilities.map((v) => (
+                      <div key={v.name} className="space-y-1">
+                        <div className="flex items-center justify-between gap-6">
+                          <div className="flex items-center gap-2">
+                            <span className="size-2.5 rounded-sm" style={{ background: v.color }} />
+                            <span className="text-muted-foreground">{v.name}</span>
+                          </div>
+                          <span className="font-mono tabular-nums">{v.value}%</span>
+                        </div>
+                        <div className="h-0.5 w-16 rounded-full" style={{ background: v.color }} />
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Activity Bar + Members */}
+            <Card className="bg-gray-50 border-transparent">
+              <CardHeader className="flex items-center justify-between">
+                <CardTitle className="text-base">Projects Activity</CardTitle>
+                <Select defaultValue="y2025">
+                  <SelectTrigger size="sm">
+                    <SelectValue placeholder="2025" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="y2023">2023</SelectItem>
+                      <SelectItem value="y2024">2024</SelectItem>
+                      <SelectItem value="y2025">2025</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
               </CardHeader>
               <CardContent>
                 <ChartContainer
-                  config={{ count: { label: "Projects", color: "hsl(var(--chart-3))" } }}
-                  className="h-[360px]"
+                  config={{ value: { label: "Activity", color: "hsl(var(--chart-5))" } }}
+                  className="aspect-[16/5]"
                 >
-                  <BarChart data={projectsByType} barSize={24}>
+                  <BarChart data={projectsActivity} barSize={18}>
                     <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                    <XAxis dataKey="type" axisLine={false} tickLine={false} />
+                    <XAxis dataKey="month" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="count" radius={[6, 6, 0, 0]}>
-                      {projectsByType.map((_, i) => {
-                        const colors = ["#60a5fa", "#34d399", "#a78bfa", "#22d3ee", "#86efac", "#cbd5e1"]
-                        return <Cell key={i} fill={colors[i % colors.length]} />
+                    <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+                      {projectsActivity.map((_, i) => {
+                        const purples = ["#c7d2fe", "#a5b4fc", "#818cf8", "#6366f1", "#8b5cf6", "#7c3aed"]
+                        return <Cell key={i} fill={purples[i % purples.length]} />
                       })}
                     </Bar>
                   </BarChart>
@@ -429,123 +513,35 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-orange-50/50 border-transparent">
-              <CardHeader>
-                <CardTitle className="text-base">Vulnerabilities</CardTitle>
-                <CardDescription>By severity</CardDescription>
-              </CardHeader>
-              <CardContent className="grid grid-cols-2 items-center gap-4 h-[360px]">
-                <ChartContainer
-                  config={{
-                    critical: { label: "Critical", color: "#ef4444" },
-                    high: { label: "High", color: "#f59e0b" },
-                    medium: { label: "Medium", color: "#fbbf24" },
-                    low: { label: "Low", color: "#22c55e" },
-                  }}
-                  className="max-h-full grid place-items-center"
-                >
-                  <PieChart width={160} height={160}>
-                    <Pie
-                      data={vulnerabilities}
-                      dataKey="value"
-                      nameKey="name"
-                      innerRadius={48}
-                      outerRadius={72}
-                      paddingAngle={6}
-                      cornerRadius={12}
-                      stroke="#ffffff"
-                      strokeWidth={6}
-                    >
-                      {vulnerabilities.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                  </PieChart>
-                </ChartContainer>
-                <div className="space-y-3 text-sm">
-                  {vulnerabilities.map((v) => (
-                    <div key={v.name} className="space-y-1">
-                      <div className="flex items-center justify-between gap-6">
-                        <div className="flex items-center gap-2">
-                          <span className="size-2.5 rounded-sm" style={{ background: v.color }} />
-                          <span className="text-muted-foreground">{v.name}</span>
-                        </div>
-                        <span className="font-mono tabular-nums">{v.value}%</span>
-                      </div>
-                      <div className="h-0.5 w-16 rounded-full" style={{ background: v.color }} />
+            {/* Members Activities */}
+            <div className="grid gap-3 lg:grid-cols-4">
+              {activities.map((a, i) => (
+                <Card key={i} className="lg:col-span-1 bg-violet-50 border-transparent">
+                  <CardContent className="flex items-start gap-3 py-5">
+                    <Avatar className="h-9 w-9">
+                      <AvatarImage src={a.avatar} alt={a.name} />
+                      <AvatarFallback>{a.name.slice(0, 2)}</AvatarFallback>
+                    </Avatar>
+                    <div className="space-y-1">
+                      <div className="text-sm font-medium">{a.name}</div>
+                      <div className="text-sm text-muted-foreground">{a.message}</div>
+                      <div className="text-xs text-muted-foreground">{a.time}</div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Activity Bar + Members */}
-          <Card className="bg-gray-50 border-transparent">
-            <CardHeader className="flex items-center justify-between">
-              <CardTitle className="text-base">Projects Activity</CardTitle>
-              <Select defaultValue="y2025">
-                <SelectTrigger size="sm">
-                  <SelectValue placeholder="2025" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="y2023">2023</SelectItem>
-                    <SelectItem value="y2024">2024</SelectItem>
-                    <SelectItem value="y2025">2025</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </CardHeader>
-            <CardContent>
-              <ChartContainer
-                config={{ value: { label: "Activity", color: "hsl(var(--chart-5))" } }}
-                className="aspect-[16/5]"
-              >
-                <BarChart data={projectsActivity} barSize={18}>
-                  <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                  <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                  <YAxis axisLine={false} tickLine={false} />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="value" radius={[6, 6, 0, 0]}>
-                    {projectsActivity.map((_, i) => {
-                      const purples = ["#c7d2fe", "#a5b4fc", "#818cf8", "#6366f1", "#8b5cf6", "#7c3aed"]
-                      return <Cell key={i} fill={purples[i % purples.length]} />
-                    })}
-                  </Bar>
-                </BarChart>
-              </ChartContainer>
-            </CardContent>
-          </Card>
-
-          {/* Members Activities */}
-          <div className="grid gap-3 lg:grid-cols-4">
-            {activities.map((a, i) => (
-              <Card key={i} className="lg:col-span-1 bg-violet-50 border-transparent">
-                <CardContent className="flex items-start gap-3 py-5">
-                  <Avatar className="h-9 w-9">
-                    <AvatarImage src={a.avatar} alt={a.name} />
-                    <AvatarFallback>{a.name.slice(0, 2)}</AvatarFallback>
-                  </Avatar>
-                  <div className="space-y-1">
-                    <div className="text-sm font-medium">{a.name}</div>
-                    <div className="text-sm text-muted-foreground">{a.message}</div>
-                    <div className="text-xs text-muted-foreground">{a.time}</div>
+                  </CardContent>
+                </Card>
+              ))}
+              <Card className="lg:col-span-1 bg-violet-50 border-transparent">
+                <CardContent className="flex items-center justify-between py-5">
+                  <div>
+                    <div className="text-sm font-medium">View Full Details</div>
+                    <div className="text-xs text-muted-foreground">Today: 11:59 AM</div>
                   </div>
+                  <Button variant="outline" size="sm">Open</Button>
                 </CardContent>
               </Card>
-            ))}
-            <Card className="lg:col-span-1 bg-violet-50 border-transparent">
-              <CardContent className="flex items-center justify-between py-5">
-                <div>
-                  <div className="text-sm font-medium">View Full Details</div>
-                  <div className="text-xs text-muted-foreground">Today: 11:59 AM</div>
-                </div>
-                <Button variant="outline" size="sm">Open</Button>
-              </CardContent>
-            </Card>
-          </div>
-        </main>
+            </div>
+          </main>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   )
