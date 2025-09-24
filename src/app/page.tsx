@@ -230,7 +230,13 @@ export default function DashboardPage() {
 
       {/* Main */}
       <SidebarInset>
-        <div className={(notifOpen ? "mr-[360px] sm:mr-[420px]" : "") + " transition-[margin] duration-200"}>
+        <div
+          className={
+            (notifOpen
+              ? "grid grid-cols-[1fr_360px] sm:grid-cols-[1fr_420px]"
+              : "") + " transition-[grid-template-columns] duration-200"
+          }
+        >
           {/* Header */}
           <header className="sticky top-0 z-10 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
             <div className={`max-w-7xl mx-auto px-4 py-3 flex items-center gap-2`}>
@@ -264,7 +270,7 @@ export default function DashboardPage() {
           {notifOpen && (
             <aside
               aria-label="Notifications panel"
-              className="fixed right-0 top-0 z-20 h-full w-[360px] sm:w-[420px] border-l bg-background"
+              className="col-start-2 row-span-full sticky top-0 h-[100dvh] w-[360px] sm:w-[420px] border-l bg-background"
             >
               <div className="flex items-start justify-between px-4 py-4 border-b">
                 <div>
