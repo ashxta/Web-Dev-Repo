@@ -243,12 +243,12 @@ export default function DashboardPage() {
                 <Search className="absolute left-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
                 <Input placeholder="Search" className="h-9 w-64 pl-8" />
               </div>
-              {/* Notifications Button with Side Panel */}
-              <Button 
-                variant="outline" 
-                size="icon" 
+              {/* Notifications Sheet */}
+              <Button
+                variant="outline"
+                size="icon"
                 className="h-9 w-9"
-                onClick={() => setNotifOpen(!notifOpen)}
+                onClick={() => setNotifOpen((v) => !v)}
               >
                 <Bell className="size-4" />
               </Button>
@@ -259,6 +259,32 @@ export default function DashboardPage() {
             </div>
           </div>
         </header>
+
+        {notifOpen && (
+          <aside
+            aria-label="Notifications panel"
+            className="fixed right-0 top-0 z-20 h-full w-[360px] sm:w-[420px] border-l bg-background"
+          >
+            <div className="flex items-start justify-between px-4 py-4 border-b">
+              <div>
+                <div className="text-sm font-semibold">Notifications</div>
+                <div className="text-xs text-muted-foreground">Recent updates and alerts</div>
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => setNotifOpen(false)}>Close</Button>
+            </div>
+            <div className="p-4 space-y-3 overflow-y-auto h-[calc(100%-64px)]">
+              {notifications.map((n, i) => (
+                <div key={i} className="flex items-start gap-3 rounded-md border bg-muted/50 p-3">
+                  <div className="size-8 shrink-0 grid place-items-center rounded-md bg-indigo-100 text-indigo-700">🔔</div>
+                  <div className="space-y-0.5">
+                    <div className="text-sm font-medium leading-none">{n.title}</div>
+                    <div className="text-xs text-muted-foreground">{n.time}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </aside>
+        )}
 
         <main className={`max-w-7xl mx-auto p-4 md:p-6 space-y-4 ${notifOpen ? "pr-[360px] sm:pr-[420px]" : ""}`}>
           {/* Top Row: Title + actions */}
@@ -285,89 +311,84 @@ export default function DashboardPage() {
           </div>
 
           {/* KPI Cards */}
-          <div className="grid gap-4 lg:grid-cols-4">
-            {/* Total Projects with Vulnerabilities below */}
-            <div className="lg:col-span-2 space-y-4">
-              <Card className="bg-violet-50 border-transparent">
-                <CardHeader className="flex items-start justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="size-8 rounded-md bg-violet-500 text-white grid place-items-center">
-                      <LayoutDashboard className="size-4" />
-                    </div>
-                    <div>
-                      <CardDescription>Total Projects</CardDescription>
-                      <CardTitle className="text-2xl">7,265</CardTitle>
-                    </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
+            {/* Total Projects */}
+            <Card className="bg-violet-50 border-transparent">
+              <CardHeader className="flex items-start justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="size-8 rounded-md bg-violet-500 text-white grid place-items-center">
+                    <LayoutDashboard className="size-4" />
                   </div>
-                  <div className="flex flex-col items-end leading-none">
-                    <span className="text-xs text-green-600 font-medium">+11.01%</span>
-                    <span className="text-base">📈</span>
+                  <div>
+                    <CardDescription>Total Projects</CardDescription>
+                    <CardTitle className="text-2xl">7,265</CardTitle>
                   </div>
-                </CardHeader>
-              </Card>
-              
-              <Card className="bg-orange-50 border-transparent">
-                <CardHeader className="flex items-start justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="size-8 rounded-md bg-orange-500 text-white grid place-items-center">
-                      <ShieldAlert className="size-4" />
-                    </div>
-                    <div>
-                      <CardDescription>Vulnerabilities</CardDescription>
-                      <CardTitle className="text-2xl">156</CardTitle>
-                    </div>
+                </div>
+                <div className="flex flex-col items-end leading-none">
+                  <span className="text-xs text-green-600 font-medium">+11.01%</span>
+                  <span className="text-base">📈</span>
+                </div>
+              </CardHeader>
+            </Card>
+            {/* Active Projects */}
+            <Card className="bg-sky-50 border-transparent">
+              <CardHeader className="flex items-start justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="size-8 rounded-md bg-sky-500 text-white grid place-items-center">
+                    <FolderKanban className="size-4" />
                   </div>
-                  <div className="flex flex-col items-end leading-none">
-                    <span className="text-xs text-orange-600 font-medium">+15.03%</span>
-                    <span className="text-base">📈</span>
+                  <div>
+                    <CardDescription>Active Projects</CardDescription>
+                    <CardTitle className="text-2xl">3,671</CardTitle>
                   </div>
-                </CardHeader>
-              </Card>
-            </div>
-
-            {/* Active Projects with Clients below */}
-            <div className="lg:col-span-2 space-y-4">
-              <Card className="bg-sky-50 border-transparent">
-                <CardHeader className="flex items-start justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="size-8 rounded-md bg-sky-500 text-white grid place-items-center">
-                      <FolderKanban className="size-4" />
-                    </div>
-                    <div>
-                      <CardDescription>Active Projects</CardDescription>
-                      <CardTitle className="text-2xl">3,671</CardTitle>
-                    </div>
+                </div>
+                <div className="flex flex-col items-end leading-none">
+                  <span className="text-xs text-red-600 font-medium">-0.03%</span>
+                  <span className="text-base">📈</span>
+                </div>
+              </CardHeader>
+            </Card>
+            {/* Vulnerabilities */}
+            <Card className="bg-orange-50 border-transparent">
+              <CardHeader className="flex items-start justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="size-8 rounded-md bg-orange-500 text-white grid place-items-center">
+                    <ShieldAlert className="size-4" />
                   </div>
-                  <div className="flex flex-col items-end leading-none">
-                    <span className="text-xs text-red-600 font-medium">-0.03%</span>
-                    <span className="text-base">📈</span>
+                  <div>
+                    <CardDescription>Vulnerabilities</CardDescription>
+                    <CardTitle className="text-2xl">156</CardTitle>
                   </div>
-                </CardHeader>
-              </Card>
-              
-              <Card className="bg-indigo-50 border-transparent">
-                <CardHeader className="flex items-start justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="size-8 rounded-md bg-indigo-500 text-white grid place-items-center">
-                      <Users2 className="size-4" />
-                    </div>
-                    <div>
-                      <CardDescription>Clients</CardDescription>
-                      <CardTitle className="text-2xl">2,318</CardTitle>
-                    </div>
+                </div>
+                <div className="flex flex-col items-end leading-none">
+                  <span className="text-xs text-orange-600 font-medium">+15.03%</span>
+                  <span className="text-base">📈</span>
+                </div>
+              </CardHeader>
+            </Card>
+            {/* Clients */}
+            <Card className="bg-indigo-50 border-transparent">
+              <CardHeader className="flex items-start justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="size-8 rounded-md bg-indigo-500 text-white grid place-items-center">
+                    <Users2 className="size-4" />
                   </div>
-                  <div className="flex flex-col items-end leading-none">
-                    <span className="text-xs text-green-600 font-medium">+6.03%</span>
-                    <span className="text-base">📈</span>
+                  <div>
+                    <CardDescription>Clients</CardDescription>
+                    <CardTitle className="text-2xl">2,318</CardTitle>
                   </div>
-                </CardHeader>
-              </Card>
-            </div>
+                </div>
+                <div className="flex flex-col items-end leading-none">
+                  <span className="text-xs text-green-600 font-medium">+6.03%</span>
+                  <span className="text-base">📈</span>
+                </div>
+              </CardHeader>
+            </Card>
           </div>
 
           {/* Charts Row */}
-          <div className="grid gap-4 lg:grid-cols-4">
-            <Card className="lg:col-span-3 bg-gray-50 border-transparent">
+          <div className="grid gap-4 lg:grid-cols-3">
+            <Card className="lg:col-span-2 bg-gray-50 border-transparent">
               <CardHeader className="flex items-center justify-between">
                 <div>
                   <CardTitle className="text-base">Projects by Type</CardTitle>
@@ -390,9 +411,9 @@ export default function DashboardPage() {
               <CardContent>
                 <ChartContainer
                   config={{ count: { label: "Projects", color: "hsl(var(--chart-3))" } }}
-                  className="h-[300px]"
+                  className="h-[360px]"
                 >
-                  <BarChart data={projectsByType} barSize={32}>
+                  <BarChart data={projectsByType} barSize={24}>
                     <CartesianGrid vertical={false} strokeDasharray="3 3" />
                     <XAxis dataKey="type" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
@@ -413,48 +434,45 @@ export default function DashboardPage() {
                 <CardTitle className="text-base">Vulnerabilities</CardTitle>
                 <CardDescription>By severity</CardDescription>
               </CardHeader>
-              <CardContent className="flex flex-col items-center gap-4">
-                <div className="relative">
-                  <ChartContainer
-                    config={{
-                      critical: { label: "Critical", color: "#ef4444" },
-                      high: { label: "High", color: "#f59e0b" },
-                      medium: { label: "Medium", color: "#fbbf24" },
-                      low: { label: "Low", color: "#22c55e" },
-                    }}
-                    className="w-40 h-40"
-                  >
-                    <PieChart width={160} height={160}>
-                      <Pie
-                        data={vulnerabilities}
-                        dataKey="value"
-                        nameKey="name"
-                        cx={80}
-                        cy={80}
-                        innerRadius={45}
-                        outerRadius={75}
-                        paddingAngle={2}
-                        startAngle={90}
-                        endAngle={450}
-                      >
-                        {vulnerabilities.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ChartContainer>
-                </div>
-                <div className="space-y-3 text-sm w-full">
+              <CardContent className="grid grid-cols-2 items-center gap-4 h-[360px]">
+                <ChartContainer
+                  config={{
+                    critical: { label: "Critical", color: "#ef4444" },
+                    high: { label: "High", color: "#f59e0b" },
+                    medium: { label: "Medium", color: "#fbbf24" },
+                    low: { label: "Low", color: "#22c55e" },
+                  }}
+                  className="max-h-full grid place-items-center"
+                >
+                  <PieChart width={160} height={160}>
+                    <Pie
+                      data={vulnerabilities}
+                      dataKey="value"
+                      nameKey="name"
+                      innerRadius={48}
+                      outerRadius={72}
+                      paddingAngle={6}
+                      cornerRadius={12}
+                      stroke="#ffffff"
+                      strokeWidth={6}
+                    >
+                      {vulnerabilities.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </ChartContainer>
+                <div className="space-y-3 text-sm">
                   {vulnerabilities.map((v) => (
                     <div key={v.name} className="space-y-1">
-                      <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center justify-between gap-6">
                         <div className="flex items-center gap-2">
                           <span className="size-2.5 rounded-sm" style={{ background: v.color }} />
                           <span className="text-muted-foreground">{v.name}</span>
                         </div>
                         <span className="font-mono tabular-nums">{v.value}%</span>
                       </div>
-                      <div className="h-0.5 w-full rounded" style={{ background: v.color, opacity: 0.3 }} />
+                      <div className="h-0.5 w-16 rounded-full" style={{ background: v.color }} />
                     </div>
                   ))}
                 </div>
@@ -528,37 +546,6 @@ export default function DashboardPage() {
             </Card>
           </div>
         </main>
-
-        {/* Notifications Side Panel */}
-        {notifOpen && (
-          <div className="fixed top-0 right-0 w-[360px] sm:w-[420px] h-full bg-background border-l shadow-lg z-50">
-            <div className="flex items-center justify-between p-4 border-b">
-              <div>
-                <h3 className="text-lg font-semibold">Notifications</h3>
-                <p className="text-sm text-muted-foreground">Recent updates and alerts</p>
-              </div>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="h-8 w-8"
-                onClick={() => setNotifOpen(false)}
-              >
-                ✕
-              </Button>
-            </div>
-            <div className="p-4 space-y-3 overflow-y-auto h-full pb-20">
-              {notifications.map((n, i) => (
-                <div key={i} className="flex items-start gap-3 rounded-md border bg-muted/50 p-3">
-                  <div className="size-8 shrink-0 grid place-items-center rounded-md bg-indigo-100 text-indigo-700">🔔</div>
-                  <div className="space-y-0.5">
-                    <div className="text-sm font-medium leading-none">{n.title}</div>
-                    <div className="text-xs text-muted-foreground">{n.time}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </SidebarInset>
     </SidebarProvider>
   )
